@@ -34,6 +34,9 @@ def save_html_report(stocks_data, news_data, output_path):
             <td style="padding: 12px; border-bottom: 1px solid #e5e7eb; color: {change_color}; font-weight: 500;">
                 {change_symbol}{stock['change_percent']:.2f}%
             </td>
+            <td style="padding: 12px; border-bottom: 1px solid #e5e7eb;">${stock.get('fifty_two_week_high', 0):.2f}</td>
+            <td style="padding: 12px; border-bottom: 1px solid #e5e7eb;">${stock.get('fifty_two_week_low', 0):.2f}</td>
+            <td style="padding: 12px; border-bottom: 1px solid #e5e7eb;">{stock.get('market_cap', 'N/A')}</td>
         </tr>
         """
     
@@ -80,12 +83,18 @@ def save_html_report(stocks_data, news_data, output_path):
                 padding: 20px;
             }}
             .container {{
-                max-width: 600px;
+                max-width: 100%;
+                width: 100%;
                 margin: 0 auto;
                 background-color: #ffffff;
                 border-radius: 12px;
                 overflow: hidden;
                 box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            }}
+            .content-wrapper {{
+                max-width: 1200px;
+                margin: 0 auto;
+                padding: 20px;
             }}
             .header {{
                 padding: 24px;
@@ -248,21 +257,29 @@ def save_html_report(stocks_data, news_data, output_path):
             <div class="content">
                 <h2 class="section-title en">The Scoreboard</h2>
                 <h2 class="section-title zh">行情一览</h2>
+                <div style="overflow-x: auto;">
                 <table class="stock-table" cellpadding="0" cellspacing="0">
                     <thead>
                         <tr>
-<th class="en">Symbol</th>
+                            <th class="en">Symbol</th>
                             <th class="zh">股票代码</th>
                             <th class="en">Price</th>
                             <th class="zh">价格</th>
                             <th class="en">Change</th>
                             <th class="zh">涨跌幅</th>
+                            <th class="en">52W High</th>
+                            <th class="zh">52周高</th>
+                            <th class="en">52W Low</th>
+                            <th class="zh">52周低</th>
+                            <th class="en">Market Cap</th>
+                            <th class="zh">市值</th>
                         </tr>
                     </thead>
                     <tbody>
                         {stocks_rows}
                     </tbody>
                 </table>
+                </div>
             </div>
             
             <!-- News Section -->

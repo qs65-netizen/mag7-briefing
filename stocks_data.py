@@ -50,13 +50,35 @@ def get_mag7_stocks():
             change = current_price - previous_close
             change_percent = (change / previous_close) * 100 if previous_close > 0 else 0
             
+            # Get 52 week high/low and market cap
+            try:
+                info = ticker.info
+                fifty_two_week_high = info.get('fiftyTwoWeekHigh', 0)
+                fifty_two_week_low = info.get('fiftyTwoWeekLow', 0)
+                market_cap = info.get('marketCap', 0)
+                
+                # Format market cap to billions
+                if market_cap > 1e12:
+                    market_cap_formatted = f"${market_cap/1e12:.2f}T"
+                elif market_cap > 1e9:
+                    market_cap_formatted = f"${market_cap/1e9:.2f}B"
+                else:
+                    market_cap_formatted = f"${market_cap/1e6:.2f}M"
+            except:
+                fifty_two_week_high = 0
+                fifty_two_week_low = 0
+                market_cap_formatted = "N/A"
+            
             stock_info = {
                 'symbol': ticker_symbol,
                 'company': company_name,
                 'current_price': round(current_price, 2),
                 'previous_close': round(previous_close, 2),
                 'change': round(change, 2),
-                'change_percent': round(change_percent, 2)
+                'change_percent': round(change_percent, 2),
+                'fifty_two_week_high': round(fifty_two_week_high, 2) if fifty_two_week_high else 0,
+                'fifty_two_week_low': round(fifty_two_week_low, 2) if fifty_two_week_low else 0,
+                'market_cap': market_cap_formatted
             }
             
             stocks.append(stock_info)
